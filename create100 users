@@ -1,0 +1,15 @@
+#!/bin/bash
+USER_LIST=$@
+USER_FILE=./user.info
+for user in $USER_LIST; do
+	if ! id $user &>/dev/null;then
+	        pass=$(echo $RANDOM | md5sum | cut -c 1-6)
+		useradd $user
+		echo $user:$pass |chpasswd
+		echo "$user   $pass" >> $USER_FILE
+		echo "$USER user create successful"
+	else
+		echo "$user user already exists!"
+	fi
+
+done
