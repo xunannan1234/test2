@@ -1,0 +1,12 @@
+#!/bin/bash
+DATA=$(date +%F-%H-%M)
+HOST=localhost
+USER=root
+BACKUP_DIR=/home/xunannan/data
+DB_LIST=$(mysql -h$HOST -u$USER  -s -e "show databases;"  2>/dev/null |egrep -v " information_schema|mysql|performance_schema|sys")
+
+for DB in $DB_LIST;do
+	BACKUP_NAME=$BACKUP_DIR/${DB}_${DATA}.sql
+	mysqldump -h$HOST -u$USER -B $DB > $BACKUP_NAME 2>/dev/null
+done
+
