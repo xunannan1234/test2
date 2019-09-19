@@ -1,0 +1,16 @@
+#!/bin/bash
+NIC=$1
+echo -e "IN--------OUT"
+while true;do
+	old_in=$(awk '/ens33/{print $2}' /proc/net/dev)
+	old_out=$(awk '/ens33/{print $10}' /proc/net/dev)
+	sleep 1
+	new_in=$(awk '/ens33/{print $2}' /proc/net/dev)
+        new_out=$(awk '/ens33/{print $10}' /proc/net/dev)
+
+	IN=$(printf "%.1f%s" "$((($new_in-$old_in)/1024))" "kb/s")
+	OUT=$(printf "%.1f%s" "$((($new_out-$old_out)/1024))" "kb/s")
+	echo  "$IN  $OUT"
+	sleep 1
+done
+
